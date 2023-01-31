@@ -553,18 +553,6 @@ package ecosystem.
 > **TODO:** Anything else? Do they need to make risk-based decisions? Respond to
 > errors/warnings? Do consumers trust builders, or is that up to the package ecosystem?
   
-## Auditor
-
-An <dfn>auditor</dfn> is an organization or individual that certifies build
-systems for conformance with the SLSA requirements.
-  
-A consumer MAY act as their own auditor.
-  
-An auditor SHOULD use the prompts in [verifying systems](verifying-systems.md)
-when assessing build systems. Auditors MAY go beyond these prompts.
-  
-An auditor SHOULD periodically reassess build systems for conformance.
-  
 ## Source control
 
 [Source control]: #source-control
