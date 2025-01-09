@@ -1,6 +1,7 @@
 ---
 title: Threats & mitigations
 description: A comprehensive technical analysis of supply chain threats and their corresponding mitigations in SLSA.
+layout: specifications
 ---
 
 What follows is a comprehensive technical analysis of supply chain threats and

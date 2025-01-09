@@ -11,8 +11,8 @@ This is the Working Draft of what the next version of the SLSA
 specification might be. It defines several SLSA levels and tracks, as
 well as recommended attestation formats, including provenance.
 
-{%- for section in site.data.nav.draft %}
-{%- if section.children %}
+{%- for section in site.data.nav.main %}
+{%- if section.url == page.url and section.children %}
 
 ## {{ section.title }}
 

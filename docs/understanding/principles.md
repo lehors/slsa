@@ -1,6 +1,7 @@
 ---
 title: Guiding principles
 description: An introduction to the guiding principles behind SLSA's design decisions.
+layout: specifications
 ---
 
 This page is an introduction to the guiding principles behind SLSA's design
