@@ -27,3 +27,4 @@ jobs:
             fix
             style
             impl
+            build
