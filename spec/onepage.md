@@ -1,14 +1,15 @@
 ---
 title: SLSA Specification
-description: Description of the SLSA standards and technical controls to improve artifact integrity.
-layout: standard
+description: A one-page rendering of all that is included in the SLSA spec.
 noindex: true
 ---
 {%- comment -%}
 A single page containing all the following files as different sections
 {%- endcomment -%}
 
-{% assign dir = "/spec/v0.1/" %}
-{% assign filenames = "terminology,levels,requirements,threats,faq" %}
+{%- capture files %}
+{%- include onepage-files.liquid %}
+{%- endcapture %}
+{% assign filenames = files | strip %}
 
-{% include onepage.liquid dir=dir filenames=filenames %}
+{% include onepage.liquid dir=page.dir filenames=filenames %}
