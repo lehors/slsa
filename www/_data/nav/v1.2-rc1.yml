@@ -130,7 +130,7 @@
       description: Suggested VSA format and explanation
 
   - title: Single-page view
-    url: /spec/v1.2-rc1/onepage
+    url: /spec/v1.2-rc1/zonepage
     skip_next_prev: true  # don't show as a next/prev link
 
 - title: How to SLSA

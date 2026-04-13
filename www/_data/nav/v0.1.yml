@@ -30,7 +30,7 @@
         url: /spec/v0.1/faq
 
       - title: Single-page view
-        url: /spec/v0.1/onepage
+        url: /spec/v0.1/zonepage
         skip_next_prev: true  # don't show as a next/prev link
 
     - title: Attestations
