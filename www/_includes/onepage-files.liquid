@@ -1,16 +1,15 @@
 {%- comment %}
-  Render next/previous links based on the nav bar.
-  Remember to update nav.html and onepage-files.liquid if you update the top part.
+  Find the right collection from the navigation data and return the list of associated files
+  Remember to update pagination.html and nav.html if you update the top part.
 {% endcomment %}
 
-{%- comment %}Find the right collection from the navigation data{% endcomment %}
 {%- assign nav = site.data.nav["main"] %}
 {%- for item in nav %}
-  {% if item.url == page.dir or item.url == page.url %}
-    {% assign this = item %}
-    {% break %}
-  {% endif %}
-{% endfor %}
+  {%- if item.url == page.dir or item.url == page.url %}
+    {%- assign this = item %}
+    {%- break %}
+  {%- endif %}
+{%- endfor %}
 {%- if this %}
   {%- comment %}matching_pages = array of "[URL] [TITLE]"{% endcomment %}
   {%- capture matching_pages_newline_separated %}
@@ -32,37 +31,17 @@
   {%- capture matching_pages_newline_separated %}
   {%- include pagination-parse.liquid collection=this %}
   {%- endcapture %}
-{% endif %}
-
+{%- endif %}
 
 {%- assign matching_pages = matching_pages_newline_separated | split: "<ENDTITLE>" %}
 
 {%- for entry in matching_pages %}
   {%- assign url = entry | split: "<ENDURL>" | first %}
-  {%- if url == page.url %}
-    {%- unless forloop.first %}
-      {%- assign prev_index = forloop.index0 | minus: 1 %}
-      {%- assign prev_entry = matching_pages[prev_index] | strip %}
-    {%- endunless %}
-    {%- unless forloop.last %}
-      {%- assign next_index = forloop.index0 | plus: 1 %}
-      {%- assign next_entry = matching_pages[next_index] | strip %}
-    {%- endunless %}
-    {%- break %}
+  {%- assign file = url | split: page.dir | last %}
+  {%- if files.size > 0 %}
+    {%- assign files = files | append: "," %}
   {%- endif %}
+  {%- assign files = files | append: {{file}} %}
 {%- endfor %}
 
-{%- if prev_entry or next_entry%}
-  <div class="mt-10 pt-10 border-t flex flex-col sm:flex-row space-between gap-5">
-    {%- if prev_entry %}
-      {%- assign url = prev_entry | split: "<ENDURL>" | first %}
-      {%- assign title = prev_entry | split: "<ENDURL>" | last | escape_once %}
-      <a href="{{ url }}" class="border rounded px-4 py-2 text-left">&lsaquo; {{ title }}</a>
-    {%- endif %}
-    {%- if next_entry %}
-      {%- assign url = next_entry | split: "<ENDURL>" | first %}
-      {%- assign title = next_entry | split: "<ENDURL>" | last | escape_once %}
-      <a href="{{ url }}" class="sm:ml-auto border rounded px-4 py-2 text-right">{{ title }} &rsaquo;</a>
-    {%- endif %}
-  </div>
-{% endif %}
+{{files}}

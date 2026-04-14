@@ -128,5 +128,5 @@
   url: /blog
 
 - title: Single-page view
-  url: /spec/v1.1-rc1/onepage
+  url: /spec/v1.1-rc1/zonepage
   skip_next_prev: true  # don't show as a next/prev link

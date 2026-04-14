@@ -98,3 +98,15 @@
 /get-started            /how-to/get-started         301
 /how-to-infra           /how-to/how-to-infra        301
 /how-to-orgs            /how-to/how-to-orgs         301
+
+/spec/v0.1/onepage	/spec/v0.1/zonepage	    301
+/spec/v0.2/onepage	/spec/v0.2/zonepage	    301
+/spec/v1.0/onepage	/spec/v1.0/zonepage	    301
+/spec/v1.0-rc1/onepage	/spec/v1.0-rc1/zonepage	    301
+/spec/v1.0-rc2/onepage	/spec/v1.0-rc2/zonepage	    301
+/spec/v1.1/onepage	/spec/v1.1/zonepage	    301
+/spec/v1.1-rc1/onepage	/spec/v1.1-rc1/zonepage	    301
+/spec/v1.1-rc2/onepage	/spec/v1.1-rc2/zonepage	    301
+/spec/v1.2/onepage	/spec/v1.2/zonepage	    301
+/spec/v1.2-rc1/onepage	/spec/v1.2-rc1/zonepage	    301
+/spec/v1.2-rc2/onepage	/spec/v1.2-rc2/zonepage	    301

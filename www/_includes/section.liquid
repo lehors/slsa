@@ -1,50 +1,54 @@
 {% comment %}
 This code includes the content of a page after massaging it to fix the
-header levels to shift them down one level, make the links relative,
-and change "section" to "sub-section" and "page" to "section" in the content.
+header levels to shift them down one level, make the links relative and
+unique by prefixing them with the filename, and change "section" to
+"sub-section" and "page" to "section" in the content.
 Note: This last step is fragile. It could have adverse effects since
 this is merely text based.
+Note: This only works if the content is already rendered (i.e., HTML) so make
+sure it is.
 {% endcomment %}
 
 {% unless include.noshift %}
-   {% assign fixedcontent = include.content | replace: "# ", "## " %}
-   {% capture fixedcontent %}{{fixedcontent | replace: "<h4", "<h5"}}{% endcapture %}
+   {% capture pattern %}<h4 id="{% endcapture %}
+   {% capture anchor %}<h5 id="{{include.file}}-{% endcapture %}
+   {% capture fixedcontent %}{{include.content | replace: pattern, anchor}}{% endcapture %}
    {% capture fixedcontent %}{{fixedcontent | replace: "</h4>", "</h5>"}}{% endcapture %}
-   {% capture fixedcontent %}{{fixedcontent | replace: "<h3", "<h4"}}{% endcapture %}
+   {% capture pattern %}<h3 id="{% endcapture %}
+   {% capture anchor %}<h4 id="{{include.file}}-{% endcapture %}
+   {% capture fixedcontent %}{{fixedcontent | replace: pattern, anchor}}{% endcapture %}
    {% capture fixedcontent %}{{fixedcontent | replace: "</h3>", "</h4>"}}{% endcapture %}
-   {% capture fixedcontent %}{{fixedcontent | replace: "<h2", "<h3"}}{% endcapture %}
+   {% capture pattern %}<h2 id="{% endcapture %}
+   {% capture anchor %}<h3 id="{{include.file}}-{% endcapture %}
+   {% capture fixedcontent %}{{fixedcontent | replace: pattern, anchor}}{% endcapture %}
    {% capture fixedcontent %}{{fixedcontent | replace: "</h2>", "</h3>"}}{% endcapture %}
-   {% capture fixedcontent %}{{fixedcontent | replace: "<h1", "<h2"}}{% endcapture %}
+   {% capture pattern %}<h1 id="{% endcapture %}
+   {% capture anchor %}<h2 id="{{include.file}}-{% endcapture %}
+   {% capture fixedcontent %}{{fixedcontent | replace: pattern, anchor}}{% endcapture %}
    {% capture fixedcontent %}{{fixedcontent | replace: "</h1>", "</h2>"}}{% endcapture %}
+   {% capture pattern %}<section id="{% endcapture %}
+   {% capture anchor %}<section id="{{include.file}}-{% endcapture %}
+   {% capture fixedcontent %}{{fixedcontent | replace: pattern, anchor}}{% endcapture %}
 {% else %}
    {% assign fixedcontent = include.content %}
 {% endunless %}
 
+{%comment%}href="#anchor -> href="#file-anchor{%endcomment%}
+{% capture pattern %}href="#{% endcapture %}
+{% capture anchor %}href="#{{include.file}}-{% endcapture %}
+{% capture fixedcontent %}{{fixedcontent | replace: pattern, anchor}}{% endcapture %}
+
+{%comment%}Links to index page / baseurl{%endcomment%}
+{%comment%}href="index -> href="thispage{%endcomment%}
+{% capture pattern %}href="index{% endcapture %}
+{% capture anchor %}href="{{page.url}}{% endcapture %}
+{% capture fixedcontent %}{{fixedcontent | replace: pattern, anchor}}{% endcapture %}
+{%comment%}href="baseurl" -> href="thispage"{%endcomment%}
+{% capture pattern %}href="{{include.baseurl}}"{% endcapture %}
+{% capture anchor %}href="{{page.url}}"{% endcapture %}
+{% capture fixedcontent %}{{fixedcontent | replace: pattern, anchor}}{% endcapture %}
+
 {% for file in include.files %}
-   {%comment%}[Link](baseurl/file) -> [Link](#file){%endcomment%}
-   {% capture pattern %}]({{include.baseurl}}{{file}}{% endcapture %}
-   {% capture anchor %}](#{{file}}{% endcapture %}
-   {% capture fixedcontent %}{{fixedcontent | replace: pattern, anchor}}{% endcapture %}
-   {%comment%}[Link](file) -> [Link](#file){%endcomment%}
-   {% capture pattern %}]({{file}}{% endcapture %}
-   {% capture anchor %}](#{{file}}{% endcapture %}
-   {% capture fixedcontent %}{{fixedcontent | replace: pattern, anchor}}{% endcapture %}
-   {%comment%}[Link](#file#) -> [Link](#){%endcomment%}
-   {% capture pattern %}](#{{file}}#{% endcapture %}
-   {% capture fixedcontent %}{{fixedcontent | replace: pattern, "](#"}}{% endcapture %}
-
-   {%comment%}[Link]: baseurl/file -> [Link]: #file{%endcomment%}
-   {% capture pattern %}]: {{include.baseurl}}{{file}}{% endcapture %}
-   {% capture anchor %}]: #{{file}}{% endcapture %}
-   {% capture fixedcontent %}{{fixedcontent | replace: pattern, anchor}}{% endcapture %}
-   {%comment%}[Link]: file -> [Link]: #file{%endcomment%}
-   {% capture pattern %}]: {{file}}{% endcapture %}
-   {% capture anchor %}]: #{{file}}{% endcapture %}
-   {% capture fixedcontent %}{{fixedcontent | replace: pattern, anchor}}{% endcapture %}
-   {%comment%}[Link]: #file# -> [Link]: #{%endcomment%}
-   {% capture pattern %}]: #{{file}}#{% endcapture %}
-   {% capture fixedcontent %}{{fixedcontent | replace: pattern, "]: #"}}{% endcapture %}
-
    {%comment%}href="baseurl/file -> href="#file{%endcomment%}
    {% capture pattern %}href="{{include.baseurl}}{{file}}{% endcapture %}
    {% capture anchor %}href="#{{file}}{% endcapture %}
@@ -53,29 +57,10 @@ this is merely text based.
    {% capture pattern %}href="{{file}}{% endcapture %}
    {% capture anchor %}href="#{{file}}{% endcapture %}
    {% capture fixedcontent %}{{fixedcontent | replace: pattern, anchor}}{% endcapture %}
-   {%comment%}href="#file# -> href="#{%endcomment%}
-   {% capture pattern %}href="#{{file}}#{% endcapture %}
-   {% capture anchor %}href="#{% endcapture %}
-   {% capture fixedcontent %}{{fixedcontent | replace: pattern, anchor}}{% endcapture %}
-
-   {%comment%}Links to index page / baseurl{%endcomment%}
-   {%comment%}[Link](baseurl){%endcomment%}
-   {% capture pattern %}]({{include.baseurl}}){% endcapture %}
-   {% capture anchor %}]({{page.url}}){% endcapture %}
-   {% capture fixedcontent %}{{fixedcontent | replace: pattern, anchor}}{% endcapture %}
-   {%comment%}We do not know how to handle this form: [Link]: baseurl
-   Changing this will screw up all other links starting with baseurl
-   {% capture pattern %}]: {{include.baseurl}}{% endcapture %}
-   {% capture anchor %}]: {{page.url}}{% endcapture %}
-   {% capture fixedcontent %}{{fixedcontent | replace: pattern, anchor}}{% endcapture %}
+   {%comment%}href="#file#anchor -> href="#file-anchor - this patterns happens after the above replacement
    {%endcomment%}
-   {%comment%}href="index -> href="thispage{%endcomment%}
-   {% capture pattern %}href="index{% endcapture %}
-   {% capture anchor %}href="{{page.url}}{% endcapture %}
-   {% capture fixedcontent %}{{fixedcontent | replace: pattern, anchor}}{% endcapture %}
-   {%comment%}href="baseurl" -> href="thispage"{%endcomment%}
-   {% capture pattern %}href="{{include.baseurl}}"{% endcapture %}
-   {% capture anchor %}href="{{page.url}}"{% endcapture %}
+   {% capture pattern %}href="#{{file}}#{% endcapture %}
+   {% capture anchor %}href="#{{file}}-{% endcapture %}
    {% capture fixedcontent %}{{fixedcontent | replace: pattern, anchor}}{% endcapture %}
 {% endfor %}
 {% capture fixedcontent %}{{fixedcontent | replace: " section", " subsection" | replace: "Section", "Subsection" }}{% endcapture %}
