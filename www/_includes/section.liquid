@@ -29,7 +29,6 @@ sure it is.
    {% capture pattern %}<section id="{% endcapture %}
    {% capture anchor %}<section id="{{include.file}}-{% endcapture %}
    {% capture fixedcontent %}{{fixedcontent | replace: pattern, anchor}}{% endcapture %}
-   {% capture fixedcontent %}{{fixedcontent | replace: "</h1>", "</h2>"}}{% endcapture %}
 {% else %}
    {% assign fixedcontent = include.content %}
 {% endunless %}
